@@ -1,13 +1,10 @@
 import argparse
 import os
 
+from craxcel import constants as C
 from craxcel.main import (
     APP_SAVE_DIR,
     APP_TEMP_DIR,
-    MICROSOFT_EXCEL,
-    MICROSOFT_POWERPOINT,
-    MICROSOFT_WORD,
-    SUPPORTED_EXTENSIONS,
     FileInfo,
     MicrosoftExcel,
     MicrosoftPowerpoint,
@@ -98,16 +95,16 @@ def main():
             # Checks the extension of the file against the dictionary of
             # supported applications, returning the application name.
             try:
-                detected_application = SUPPORTED_EXTENSIONS[file_info.extension]
+                detected_application = C.SUPPORTED_EXTENSIONS[file_info.extension]
             except KeyError:
                 detected_application = 'unsupported'
 
             # Uses the deteted application to create the correct instance.
-            if detected_application == MICROSOFT_EXCEL:
+            if detected_application == C.MICROSOFT_EXCEL:
                 cxl = MicrosoftExcel(args, locked_filepath)
-            elif detected_application == MICROSOFT_WORD:
+            elif detected_application == C.MICROSOFT_WORD:
                 cxl = MicrosoftWord(args, locked_filepath)
-            elif detected_application == MICROSOFT_POWERPOINT:
+            elif detected_application == C.MICROSOFT_POWERPOINT:
                 cxl = MicrosoftPowerpoint(args, locked_filepath)
             elif file_info.extension == '.txt':
                 print(
