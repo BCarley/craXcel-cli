@@ -2,12 +2,32 @@
 
 . scripts/_common
 
-if ! command -v poetry &> /dev/null
+# We use pipx to manage our top level installs.
+if ! command -v pipx &> /dev/null
 then
-   	curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
-    exit
+	python -m pip install --user pipx
+	python -m pipx ensurepath
+        source ~/.bashrc
 fi
 
+# poetry will be installed globally but isolated
+if ! command -v poetry &> /dev/null
+then
+	pipx install poetry
+fi
+
+# pre-commit will be installed globally but isolated
+# we use pre-commit hooks to ensure linting/formatting has been
+# applied before hitting the repo
+if ! command -v pre-commit &> /dev/null
+then
+	pipx install pre-commit
+fi
+
+## The following actions are indempotent
+
+# install the package
 poetry install
 
+# install our pre-commit hooks
 pre-commit install
