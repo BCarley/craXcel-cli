@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+. scripts/_common
+
+exec poetry run mypy $PACKAGE

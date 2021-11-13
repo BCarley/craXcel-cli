@@ -1,0 +1,20 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.3.0
+    hooks:
+    -   id: check-yaml
+    -   id: trailing-whitespace
+-   repo: local
+    hooks:
+    -   id: lint
+        name: run lint
+        language: system
+        files: craxcel/
+        entry: ./scripts/lint
+        types: [python]
+    -   id: mypy
+        name: run mypy
+        language: system
+        entry: ./scripts/mypy
+        files: craxcel/
+        types: [python]

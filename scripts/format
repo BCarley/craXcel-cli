@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+. scripts/_common
+poetry run $ISORT
+poetry run $BLACK

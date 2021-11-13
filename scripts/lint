@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+. scripts/_common
+
+poetry run $FLAKE8
+poetry run $ISORT --check-only --df
+poetry run $BLACK --check --diff

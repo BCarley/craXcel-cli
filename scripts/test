@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+. scripts/_common
+poetry run pytest test --cov=$PACKAGE test

@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+# Common params and functions to use in the rest of the scripts
+
+set -e
+
+PACKAGE="craxcel"
+
+FILES=$@
+
+if [ -z "$FILES" ]; then
+	FLAKE8="flake8  $PACKAGE"
+	ISORT="isort $PACKAGE test"
+	BLACK="black -S --target-version py38 $PACKAGE test"
+else
+	FLAKE8="flake8 $FILES"
+	ISORT="isort $FILES"
+	BLACK="black -S --target-version py38 $FILES"
+fi;
+
+DEFAULT_BRANCH="master"
+
+TAGGED_COMMIT="git describe --abbrev=0 --match v* --exact-match 2> /dev/null"
+
+isClean() {
+	# check we have no uncommited changes
+	if [[ $(git diff --stat) != '' ]]; then
+		echo "Repository is dirty."
+		false;
+	else
+		true;
+	fi
+}
+
+isTagged() {
+	# check that our commit is tagged
+	if [[ ! $TAGGED_COMMIT ]]; then
+		echo "Commit not tagged."
+		false;
+	else
+		true;
+	fi
+}
+
+isDefaultBranch() {
+	# check if the current branch is on default branch
+	BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+	if [[ "$BRANCH" != $DEFAULT_BRANCH ]]; then
+		echo "Not on branch $DEFAULT_BRANCH."
+		false;
+	else
+		true;
+	fi
+}
+
+set -x

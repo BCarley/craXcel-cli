@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+. scripts/_common
+
+_print_help() {
+  _ME="$(basename "${0}")"
+  cat <<HEREDOC
+Simple script for bumping the version using poetry
+Usage:
+  ${_ME} [<version>]
+  ${_ME} -h | --help
+Options:
+  -h --help  Show this screen.
+HEREDOC
+	exit 1;
+}
+
+main() {
+	if [[ "${1:-}" =~ ^-h|--help$  ]]
+	then
+		_print_help
+	fi
+
+	if ! isClean;
+	then
+		exit 1;
+	fi
+
+	if ! isDefaultBranch;
+	then
+		exit 1;
+	fi
+
+	poetry version "$1"
+	# poetry run sweet-release changelog update $(poetry version -s)
+	git add pyproject.toml changes CHANGELOG.md
+	MSG="Bump Version: $(git describe --abbrev=0 --match v*) -> v$(poetry version -s)"
+	git commit -m "$MSG"
+	git tag -a v$(poetry version -s) -m "$MSG"
+}
+
+
+main "$@"

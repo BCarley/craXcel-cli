@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+. scripts/_common
+
+# poetry config repositories.$PYPI_ALIAS $PYPI_URL
+poetry publish
+# poetry run sweet-release publish --changelog CHANGELOG.md --version "$(poetry version -s)" --package "$PACKAGE" --commit-hash "$(git rev-parse --short HEAD)"
